@@ -1,0 +1,265 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model banners {
+  id Int @id @default(autoincrement())
+  // The image url
+  imageURL String
+  // The title on the banner
+  title String
+  // The description on the banner
+  description String
+  // The url to forward the user to
+  buttonURL String
+  // The name of the banner
+  name String @unique
+}
+
+model mangas {
+  id          Int      @id @default(autoincrement())
+  /// The name of the manga.
+  name        String   @unique
+  /// The image url for the cover of this manga.
+  coverURL    String
+  /// Whether or not this manga is completed.
+  completed   Boolean
+  /// The timestamp when this manga was added to the project.
+  addedAt     DateTime
+  /// The timestamp when this manga was last updated.
+  updatedAt   DateTime
+  /// The most recent chapter.
+  lastChapter Float
+  /// The description of this manga.
+  description String   @default("")
+  /// The amount of times this manga has been read.
+  views       Int      @default(0)
+  /// The amount of times this manga was liked
+  likes       Int      @default(0)
+  /// The amount of times this manga was disliked
+  dislikes    Int      @default(0)
+  /// The amount of users that have subscribed to this manga.
+  subscribers Int      @default(0)
+  /// Whether or not this manga is 18+
+  nsfw Boolean @default(false)
+  /// The list of genres this manga is under.
+  genres String[] @default([])
+  /// Whether or not this manga is exclusive.
+  exclusive Boolean @default(false)
+}
+
+model novels {
+  id          Int      @id @default(autoincrement())
+  /// The name of the novel.
+  name        String   @unique
+  /// The image url for the cover of this novel.
+  coverURL    String
+  /// Whether or not this novel is completed.
+  completed   Boolean
+  /// The timestamp when this novel was added to the project.
+  addedAt     DateTime
+  /// The timestamp when this novel was last updated.
+  updatedAt   DateTime
+  /// The most recent chapter.
+  lastChapter Float
+  /// The description of this novel.
+  description String   @default("")
+  /// The amount of times this novel has been read.
+  views       Int      @default(0)
+  /// The amount of times this novel was liked
+  likes       Int      @default(0)
+  /// The amount of times this novel was disliked
+  dislikes    Int      @default(0)
+  /// The amount of users that have subscribed to this novel.
+  subscribers Int      @default(0)
+  /// Whether or not this novel is 18+
+  nsfw Boolean @default(false)
+}
+
+model chapters {
+  id        Int        @id @default(autoincrement())
+  /// The name of the manga
+  manga     String
+  /// The chapter number.
+  number    Float
+  /// The amount of times this chapter was read.
+  viewCount Int
+  /// The timestamp when this was last read by anyone.
+  lastRead  DateTime
+  /// The timestamp when this chapter was released(on our project).
+  released  DateTime
+  /// The images for this chapter.
+  images    images[]
+  /// The comments that have been added.
+  comments  comments[]
+
+  @@unique([manga, number])
+}
+
+model novelChapters {
+  id        Int        @id @default(autoincrement())
+  /// The name of the novel
+  novel     String
+  /// The chapter number.
+  number    Float
+  /// The amount of times this chapter was read.
+  viewCount Int
+  /// The timestamp when this was last read by anyone.
+  lastRead  DateTime
+  /// The timestamp when this chapter was released(on our project).
+  released  DateTime
+  /// The text for this chapter.
+  text    String[]
+  /// The comments that have been added.
+  comments  novelComments[]
+
+  @@unique([novel, number])
+}
+
+model comments {
+  id        Int      @id @default(autoincrement())
+  /// The id of the chapter where this comment was made.
+  chapterId Int
+  /// The id of the user who made this comment.
+  userId    String
+  /// The text message of the comment.
+  text      String
+  /// The timestamp when this comment was created.
+  createdAt DateTime
+  /// The timestamp when this comment was edited.
+  editedAt  DateTime
+  /// The number of upvotes this comment received.
+  upvotes   Int
+  /// The name of the manga.
+  manga     String
+  /// The page number
+  page      Int
+
+  chapter chapters @relation(fields: [chapterId], references: [id])
+}
+
+model novelComments {
+  id        Int      @id @default(autoincrement())
+  /// The id of the chapter where this comment was made.
+  chapterId Int
+  /// The id of the user who made this comment.
+  userId    String
+  /// The text message of the comment.
+  text      String
+  /// The timestamp when this comment was created.
+  createdAt DateTime
+  /// The timestamp when this comment was edited.
+  editedAt  DateTime
+  /// The number of upvotes this comment received.
+  upvotes   Int
+  /// The name of the manga.
+  manga     String
+  /// The page number
+  page      Int
+
+  chapter novelChapters @relation(fields: [chapterId], references: [id])
+}
+
+model images {
+  id        Int      @id @default(autoincrement())
+  /// The chapter id this belongs to.
+  chapterId Int
+  /// The page number.
+  page      Int
+  /// The image urls.
+  urls      String[]
+  /// Whether or not the urls in this image have been hashed.
+  // hashed Boolean
+
+  chapter chapters @relation(fields: [chapterId], references: [id])
+}
+
+model masks {
+  /// The real name of the manga.
+  name String @id
+  /// The encrypted version of the manga name.
+  fake String
+}
+
+model prefills {
+  /// The name-chapter id
+  id      String   @id
+  /// The name of the manga
+  name    String
+  /// The chapter number
+  chapter Float
+  /// The urls that can be fetched for this chapter
+  urls    String[]
+}
+
+model novelPrefills {
+  /// The name-chapter id
+  id      String   @id
+  /// The name of the manga
+  name    String
+  /// The chapter number
+  chapter Float
+}
+
+model ratings {
+  id Int @id @default(autoincrement())
+  /// The id of the user
+  userId String
+  /// The name of the manga or novel. Novels are suffixed with _novel
+  name String
+  /// The rating value from 1, 2, 3, 4, or 5
+  rating Int
+
+  @@unique([userId, name])
+}
+
+model reading {
+  id      Int    @id @default(autoincrement())
+  /// The id of the user.
+  userId  String
+  /// The name of the manga.
+  manga   String
+  /// The chapter number the user is up to.
+  chapter Int
+
+  @@unique([userId, manga])
+}
+
+model subscribers {
+  id     Int    @id @default(autoincrement())
+  /// The id of the user.
+  userId String
+  /// The name of the manga.
+  manga  String
+
+  @@unique([userId, manga])
+}
+
+model users {
+  id Int @id @default(autoincrement())
+  /// The username of the user.
+  username String @unique
+  /// The password for the user.
+  password String
+  /// The email for the user if provided.
+  email String?
+  /// The discord id if the user has provided it.
+  discordID String @unique
+  /// The last time the user logged in.
+  lastActiveAt DateTime
+  
+}
+
+enum MangaSite {
+  MangaTx
+  ManhuaPlus
+  MangaBuddy
+}

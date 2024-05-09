@@ -1,0 +1,56 @@
+{
+  "name": "next-discord-oauth",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "next lint",
+    "generate": "npx prisma generate",
+    "dev": "next dev",
+    "build": "npx prisma generate && next build",
+    "start": "next start",
+    "crawl": "ts-node crawler/index.ts",
+    "covers": "ts-node crawler/cron/covers.ts",
+    "desc": "ts-node crawler/cron/descriptions.ts",
+    "speed": "ts-node crawler/cron/speedPrefill.ts",
+    "scramb": "ts-node crawler/utils/unscrambler.ts",
+    "test": "ts-node crawler/test.ts"
+  },
+  "prettier": {
+    "printWidth": 150
+  },
+  "dependencies": {
+    "@discordeno/rest": "^19.0.0-next.e19eca5",
+    "@prisma/client": "^5.0.0",
+    "@uiball/loaders": "^1.3.0",
+    "cookie": "^0.5.0",
+    "daisyui": "^3.2.1",
+    "jimp-watermark": "^1.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "next": "^14.0.3",
+    "next-pwa": "^5.6.0",
+    "next-seo": "^6.1.0",
+    "node-fetch": "^3.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
+    "react-image-upload": "^3.0.1",
+    "theme-change": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.5.1",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.15.3",
+    "@types/node-fetch": "^2.6.2",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.2.11",
+    "autoprefixer": "^10.4.14",
+    "eslint-config-next": "^13.5.4",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "postcss": "^8.4.21",
+    "prettier": "^2.8.4",
+    "prisma": "^5.0.0",
+    "tailwindcss": "^3.2.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}

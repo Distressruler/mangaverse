@@ -1,0 +1,42 @@
+base.jpg
+base2.jpg
+
+# Image Storage Directory
+public/manga/
+public/covers/
+public/*.js
+public/*.map
+
+# dependencies
+/node_modules
+.yarn/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# vercel
+.vercel
+
+# IDEs
+.idea
+.vscode

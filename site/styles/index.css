@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.novel-title {
+  font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+.novel-text {
+  @apply font-normal text-secondary not-italic mb-[-0.46em] text-lg leading-7 tracking-[-0.003em] mt-[1.56em] m-0;
+  -webkit-text-size-adjust: 100%;
+  --reach-tabs: 1;
+  --reach-menu-button: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  box-sizing: inherit;
+  word-break: break-word;
+  font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+}
